@@ -4,7 +4,8 @@ import express, { Request, Response } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
-import {connectMongo} from '../src/config/db'
+import { connectMongo } from '../src/config/db'
+import { errorHandler } from './middlewares/error'
 
 const app = express()
 connectMongo()
@@ -21,9 +22,11 @@ app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Hello from API' })
 })
 
-app.get('/api/ping', (req:Request, res:Response) => {
+app.get('/api/ping', (req: Request, res: Response) => {
   res.send('pong')
 })
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 
@@ -35,4 +38,3 @@ process.on('UnhandledRejection', (err, promise) => {
   console.log(`Error occured ${err.message}`)
   server.close(() => process.exit(1))
 })
- 
