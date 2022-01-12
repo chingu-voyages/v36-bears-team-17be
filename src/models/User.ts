@@ -10,7 +10,7 @@ export interface IUser extends Document {
   username: string
   email: string
   password: string
-  socials: any
+  socials: Map<string,string>
   image: string
   passwordResetToken: string
   passwordResetExpire: Date

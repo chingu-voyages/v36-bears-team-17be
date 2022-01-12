@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express'
-import ErrorResponse from '../utils/errorResponse.js'
+import ErrorResponse from '../utils/errorResponse'
 
-export const errorHandler = (err:Error, req:Request, res:Response, next:NextFunction) => {
+export const errorHandler = (err:any, req:Request, res:Response, next:NextFunction) => {
+  
   let error = { ...err }
 
   error.message = err.message
@@ -16,7 +17,7 @@ export const errorHandler = (err:Error, req:Request, res:Response, next:NextFunc
 
   // Mongoose validation Error
   if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map((val) => val.message)
+    const message = Object.values(err.errors).map((val:any) => val.message)
     error = new ErrorResponse(message, 400)
   }
 

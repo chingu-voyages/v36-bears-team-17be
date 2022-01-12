@@ -1,10 +1,11 @@
 // Get token from model, create cookie and send response
+import {Response} from 'express';
 
-export const sendTokenResponse = (user, statusCode, res) => {
+export const sendTokenResponse = (user:any, statusCode:number, res: Response) => {
   const token = user.getSignedJwtToken()
-  const options = {
+  const options:any = {
     expires: new Date(
-      Date.now() + process.env.JWT_EXPIRES * 24 * 60 * 60 * 1000
+      Date.now() + +process.env.JWT_EXPIRES * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
   }

@@ -4,7 +4,7 @@ import { asyncHandler } from '../middlewares/async';
 import ErrorResponse from '../utils/errorResponse'
 import { User } from '../models/User'
 
-export const protect:RequestHandler = asyncHandler(async (req: Request, res:Response, next:NextFunction) => {
+export const protect:RequestHandler = asyncHandler(async (req: Request | any, res:Response, next:NextFunction) => {
   let token
   if (
     req.headers.authorization &&
@@ -21,7 +21,7 @@ export const protect:RequestHandler = asyncHandler(async (req: Request, res:Resp
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    const decoded:any = jwt.verify(token, process.env.JWT_SECRET)
     req.user = await User.findById(decoded.id)
     next()
   } catch (e) {

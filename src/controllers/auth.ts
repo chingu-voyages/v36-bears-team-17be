@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import { asyncHandler } from '../middlewares/async.js'
-import ErrorResponse from '../utils/errorResponse.js'
-import { User } from '../models/User.js'
-import { sendTokenResponse } from '../utils/sendTokenResponse.js'
+import { asyncHandler } from '../middlewares/async'
+import ErrorResponse from '../utils/errorResponse'
+import { User } from '../models/User'
+import { sendTokenResponse } from '../utils/sendTokenResponse'
 
 // @desc      Register a new User
 // @route     POST /api/v1/auth/register
 // @access    Public
 
 export const registerUser = asyncHandler(async (req: Request, res: Response, next:NextFunction) => {
-  const user = await User.create(req.body)
+  const user:any = await User.create(req.body)
   sendTokenResponse(user, 200, res)
 })
 

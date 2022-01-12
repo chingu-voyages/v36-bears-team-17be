@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import { connectMongo } from '../src/config/db'
 import { errorHandler } from './middlewares/error'
+import authRoutes from './routes/auth'
 
 const app = express()
 connectMongo()
@@ -21,6 +22,7 @@ app.use(cookieParser())
 app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Hello from API' })
 })
+app.use('/api/auth', authRoutes)
 
 app.get('/api/ping', (req: Request, res: Response) => {
   res.send('pong')
