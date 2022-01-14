@@ -4,9 +4,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 export interface IUser extends Document {
-  firstName: string
-  lastName: string
-  name: string
+  displayName: string
   username: string
   email: string
   password: string
@@ -19,9 +17,7 @@ export interface IUser extends Document {
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
-  firstName: { type: String, required: [true, 'Please add a first name'] },
-  lastName: { type: String, required: [true, 'Please add a last name'] },
-  name: { type: String, required: true },
+  displayName: { type: String, required: true },
   username: {
     type: String,
     required: [true, 'Please add a username'],
