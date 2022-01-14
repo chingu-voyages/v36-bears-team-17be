@@ -10,11 +10,12 @@ export interface IUser extends Document {
   username: string
   email: string
   password: string
-  socials: Map<string,string>
+  socials: Map<string, string>
   image: string
   passwordResetToken: string
   passwordResetExpire: Date
   createdAt: Date
+  matchPassword:(password:string) => boolean
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
