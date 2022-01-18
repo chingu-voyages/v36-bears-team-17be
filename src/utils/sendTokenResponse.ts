@@ -14,7 +14,7 @@ export const sendTokenResponse = (user:any, statusCode:number, res: Response) =>
     options.secure = true
   }
 
-  user = { _id: user._id, firstName: user.firstName, name: user.name }
+  user = { _id: user._id, username: user.username, displayName: user.displayName}
 
   res
     .status(statusCode)

@@ -7,7 +7,7 @@ import { Comments } from '../models/Comment'
 import ErrorResponse from '../utils/errorResponse'
 
 // @desc      Get a Single Post
-// @route     GET /api/v1/auth/posts/:id
+// @route     GET /api/auth/posts/:id
 // @access    Private
 
 export const getPost = asyncHandler(
@@ -17,7 +17,7 @@ export const getPost = asyncHandler(
 )
 
 // @desc      Get posts of the current loggedin user
-// @route     GET /api/v1/auth/posts
+// @route     GET /api/auth/posts
 // @access    Private
 
 export const getPosts = asyncHandler(
@@ -27,7 +27,7 @@ export const getPosts = asyncHandler(
 )
 
 // @desc      Create a new Post
-// @route     POST /api/v1/auth/posts
+// @route     POST /api/auth/posts
 // @access    Private
 
 export const createPost = asyncHandler(
@@ -37,7 +37,7 @@ export const createPost = asyncHandler(
 )
 
 // @desc      Update a Post
-// @route     PUT /api/v1/auth/posts/:id
+// @route     PUT /api/auth/posts/:id
 // @access    Private
 
 export const updatePost = asyncHandler(
@@ -47,7 +47,7 @@ export const updatePost = asyncHandler(
 )
 
 // @desc      Delete a Post
-// @route     DELETE /api/v1/auth/posts/:id
+// @route     DELETE /api/auth/posts/:id
 // @access    Private
 
 export const deletePost = asyncHandler(
@@ -57,7 +57,7 @@ export const deletePost = asyncHandler(
 )
 
 // @desc      Get posts by user
-// @route     PUT /api/v1/auth/posts/:username
+// @route     PUT /api/auth/posts/:username
 // @access    Private
 
 export const userPosts = asyncHandler(
@@ -67,7 +67,7 @@ export const userPosts = asyncHandler(
 )
 
 // @desc      Get posts by search
-// @route     PUT /api/v1/auth/posts/search
+// @route     PUT /api/auth/posts/search
 // @access    Private
 
 export const searchPosts = asyncHandler(
@@ -75,7 +75,7 @@ export const searchPosts = asyncHandler(
 )
 
 // @desc      Like a Post
-// @route     POST /api/v1/auth/posts/:id/like
+// @route     POST /api/auth/posts/:id/like
 // @access    Private
 
 export const likePost = asyncHandler(
@@ -85,7 +85,7 @@ export const likePost = asyncHandler(
 )
 
 // @desc      Comment on a Post
-// @route     POST /api/v1/auth/posts/:id/comment
+// @route     POST /api/auth/posts/:id/comment
 // @access    Private
 
 export const commentPost = asyncHandler(
