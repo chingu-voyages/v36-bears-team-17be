@@ -26,7 +26,7 @@ const PostSchema = new mongoose.Schema<IPost>({
   tags: { type: [String] },
   imageURL: {
     type: String,
-    required: [true, 'Please enter the image URL'],
+    required: [false, 'Please enter the image URL'],
   },
   createdAt: { type: Date, default: Date.now },
   user: {

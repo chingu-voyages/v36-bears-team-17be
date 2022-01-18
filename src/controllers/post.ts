@@ -12,7 +12,16 @@ import ErrorResponse from '../utils/errorResponse'
 
 export const getPost = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    const post = await Post.findById(req.params.id)
+      .populate('likes')
+      .populate('comments')
+      .populate({ path: 'user', select: '_id username displayName' })
 
+    if (!post) {
+      return next(new ErrorResponse(`The requested post does not exist`, 401))
+    }
+
+    res.status(200).json({ message: 'success', data: post })
   }
 )
 
@@ -22,7 +31,11 @@ export const getPost = asyncHandler(
 
 export const getPosts = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-
+    const posts = await Post.find({ user: req.user._id })
+      .populate('likes')
+      .populate('comments')
+      .populate({ path: 'user', select: '_id username displayName' })
+    res.status(200).json({ count: posts.length, success: true, data: posts })
   }
 )
 
@@ -32,7 +45,15 @@ export const getPosts = asyncHandler(
 
 export const createPost = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    const { title, description } = req.body
+    req.body.user = req.user.id
+    if (!title || !description) {
+      return next(new ErrorResponse(`Please add a title, description`, 404))
+    }
 
+    const post = await Post.create(req.body)
+
+    res.status(200).json({ message: 'success', data: post })
   }
 )
 
@@ -42,7 +63,27 @@ export const createPost = asyncHandler(
 
 export const updatePost = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    let post = await Post.findById(req.params.id)
 
+    if (!post) {
+      return next(new ErrorResponse(`No post found with that Id`, 404))
+    }
+
+    if (post.user._id.toString() !== req.user._id.toString()) {
+      return next(
+        new ErrorResponse(`You are not authorized to update the post`, 403)
+      )
+    }
+
+    post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    })
+      .populate({ path: 'user', select: '_id username displayName' })
+      .populate('comments')
+      .populate('likes')
+
+    res.status(200).json({ message: 'success', data: post })
   }
 )
 
@@ -52,7 +93,21 @@ export const updatePost = asyncHandler(
 
 export const deletePost = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    let post = await Post.findById(req.params.id)
 
+    if (!post) {
+      return next(new ErrorResponse(`No post found with that Id`, 404))
+    }
+
+    if (post.user._id.toString() !== req.user._id.toString()) {
+      return next(
+        new ErrorResponse(`You are not authorized to update the post`, 401)
+      )
+    }
+
+    await Post.findByIdAndDelete(req.params.id)
+
+    res.status(200).json({ message: 'success', data: {} })
   }
 )
 
@@ -62,7 +117,16 @@ export const deletePost = asyncHandler(
 
 export const userPosts = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    const user = await User.findOne({ username: req.params.username })
 
+    if (!user) {
+      return next(new ErrorResponse(`The profile doesn't exist`, 404))
+    }
+
+    const posts = await Post.find({ user: user._id })
+      .populate('comments')
+      .populate('likes')
+    res.status(200).json({ count: posts.length, success: true, data: posts })
   }
 )
 
@@ -79,9 +143,7 @@ export const searchPosts = asyncHandler(
 // @access    Private
 
 export const likePost = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-
-  }
+  async (req: Request, res: Response, next: NextFunction) => {}
 )
 
 // @desc      Comment on a Post
@@ -89,7 +151,5 @@ export const likePost = asyncHandler(
 // @access    Private
 
 export const commentPost = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-
-  }
+  async (req: Request, res: Response, next: NextFunction) => {}
 )
