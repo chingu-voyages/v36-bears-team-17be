@@ -7,6 +7,7 @@ import morgan from 'morgan'
 import { connectMongo } from '../src/config/db'
 import { errorHandler } from './middlewares/error'
 import authRoutes from './routes/auth'
+import postRoutes  from './routes/post'
 
 const app = express()
 connectMongo()
@@ -23,6 +24,7 @@ app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Hello from API' })
 })
 app.use('/api/auth', authRoutes)
+app.use('/api/post',postRoutes)
 
 app.get('/api/ping', (req: Request, res: Response) => {
   res.send('pong')

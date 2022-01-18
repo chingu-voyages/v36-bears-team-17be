@@ -1,4 +1,4 @@
-import mongoose, { Document} from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 import crypto from 'crypto'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
@@ -13,7 +13,7 @@ export interface IUser extends Document {
   passwordResetToken: string
   passwordResetExpire: Date
   createdAt: Date
-  matchPassword:(password:string) => boolean
+  matchPassword: (password: string) => boolean
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
@@ -22,7 +22,11 @@ const UserSchema = new mongoose.Schema<IUser>({
     type: String,
     required: [true, 'Please add a username'],
     unique: true,
-    maxLength: 8,
+    match: [
+      /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/,
+      `Your username must be 8-20 characters long. a-z A-z 0-9 and _ are allowed in your username. No _ or . at the beginning or at the end. Combination of __ or _. or ._ or .. are not allowed.`,
+    ],
+    minLength: 8,
   },
   email: {
     type: String,
