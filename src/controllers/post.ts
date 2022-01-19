@@ -143,7 +143,15 @@ export const searchPosts = asyncHandler(
 // @access    Private
 
 export const likePost = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {}
+  async (req: Request, res: Response, next: NextFunction) => {
+
+    Like.find()
+    .exec()
+    .then(results => {
+      return res.status(200).json()
+    })
+    .catch()
+  }
 )
 
 // @desc      Comment on a Post
