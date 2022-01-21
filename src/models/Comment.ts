@@ -6,7 +6,7 @@ export interface IComment extends Document {
   post: PopulatedDoc<IPost>,
   user: PopulatedDoc<IUser>,
   body: String,
-  parent?: PopulatedDoc<IComment>,
+  children: [PopulatedDoc<IComment>],
   createdAt: Date
 }
 
@@ -18,11 +18,10 @@ const CommentSchema = new mongoose.Schema<IComment>({
     trim: true,
     required: true,
   },
-  parent: {
+  children: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment',
-    required: false,
-  },
+  }],
   createdAt: { type: Date, default: Date.now },
 })
 

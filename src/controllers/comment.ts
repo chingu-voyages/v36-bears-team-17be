@@ -36,6 +36,41 @@ export const commentPost = asyncHandler(
   }
 );
 
+// @desc      Reply to another comment
+// @route     POST /api/auth/posts/:postId/comments/:commentId/reply
+// @access    Private
+export const replyComment = asyncHandler(
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const { body } = req.body;
+    const { postId, commentId } = req.params;
+    req.body.user = req.user.id;
+    req.body.post = postId;
+
+    const post = await Post.findById(postId);
+    const parentComment = await Comments.findById(commentId);
+
+    if (!body) {
+      return next(new ErrorResponse('Comments need `body` parameter.', 401))
+    }
+
+    if (!post) {
+      return next(new ErrorResponse('Comment needs to be attached to a `post`.', 401));
+    }
+
+    if (!parentComment) {
+      return next(new ErrorResponse('Invalid parent comment', 401));
+    }
+
+    const newComment = await Comments.create(req.body);
+
+    parentComment.children.push(newComment);
+
+    await parentComment.save();
+
+    res.json({ message: 'success', data: newComment });
+  }
+);
+
 // @desc      Update a Comment
 // @route     PUT /api/auth/posts/:postId/comments/:commentId
 // @access    Private
