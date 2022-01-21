@@ -5,15 +5,16 @@ import { User } from '../models/User'
 import { Like } from '../models/Like'
 import { Comments } from '../models/Comment'
 import ErrorResponse from '../utils/errorResponse'
+import { RequestWithUser } from '../types/express'
 
 // @desc      Get a Single Post
 // @route     GET /api/auth/posts/:id
 // @access    Private
 
 export const getPost = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const post = await Post.findById(req.params.id)
-      .populate('likes')
+      // .populate('likes')
       .populate('comments')
       .populate({ path: 'user', select: '_id username displayName' })
 
@@ -30,7 +31,7 @@ export const getPost = asyncHandler(
 // @access    Private
 
 export const getPosts = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const posts = await Post.find({ user: req.user._id })
       .populate('likes')
       .populate('comments')
@@ -44,7 +45,7 @@ export const getPosts = asyncHandler(
 // @access    Private
 
 export const createPost = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const { title, description } = req.body
     req.body.user = req.user.id
     if (!title || !description) {
@@ -62,7 +63,7 @@ export const createPost = asyncHandler(
 // @access    Private
 
 export const updatePost = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     let post = await Post.findById(req.params.id)
 
     if (!post) {
@@ -92,7 +93,7 @@ export const updatePost = asyncHandler(
 // @access    Private
 
 export const deletePost = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     let post = await Post.findById(req.params.id)
 
     if (!post) {
@@ -116,7 +117,7 @@ export const deletePost = asyncHandler(
 // @access    Private
 
 export const userPosts = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const user = await User.findOne({ username: req.params.username })
 
     if (!user) {
@@ -146,10 +147,4 @@ export const likePost = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {}
 )
 
-// @desc      Comment on a Post
-// @route     POST /api/auth/posts/:id/comment
-// @access    Private
 
-export const commentPost = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {}
-)
