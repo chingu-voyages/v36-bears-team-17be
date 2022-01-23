@@ -1,6 +1,6 @@
 import mongoose, { Document, PopulatedDoc } from 'mongoose'
 import { IUser } from './User'
-import { IComments } from './Comment'
+import { IComment } from './Comment'
 import { ILike } from './Like'
 
 export interface IPost extends Document {
@@ -10,7 +10,7 @@ export interface IPost extends Document {
   imageURL?: string
   createdAt: Date
   user: PopulatedDoc<IUser>
-  comments?: PopulatedDoc<IComments>
+  comments?: [PopulatedDoc<IComment>]
   likes?: PopulatedDoc<ILike>
 }
 

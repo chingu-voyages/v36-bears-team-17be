@@ -9,7 +9,7 @@ import { sendTokenResponse } from '../utils/sendTokenResponse'
 // @access    Public
 
 export const registerUser = asyncHandler(async (req: Request, res: Response, next:NextFunction) => {
-  const user:any = await User.create(req.body)
+  const user = await User.create(req.body)
   sendTokenResponse(user, 200, res)
 })
 
