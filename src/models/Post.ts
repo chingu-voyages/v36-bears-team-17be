@@ -10,8 +10,8 @@ export interface IPost extends Document {
   imageURL?: string
   createdAt: Date
   user: PopulatedDoc<IUser>
-  comments?: [PopulatedDoc<IComment>]
-  likes?: PopulatedDoc<ILike>
+  comments?: PopulatedDoc<IComments>
+  likes?: [PopulatedDoc<ILike>]
 }
 
 const PostSchema = new mongoose.Schema<IPost>({
