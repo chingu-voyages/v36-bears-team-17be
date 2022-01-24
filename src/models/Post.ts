@@ -1,6 +1,6 @@
 import mongoose, { Document, PopulatedDoc } from 'mongoose'
 import { IUser } from './User'
-import { IComments } from './Comment'
+import { IComment } from './Comment'
 import { ILike } from './Like'
 
 export interface IPost extends Document {
