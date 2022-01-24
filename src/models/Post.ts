@@ -11,7 +11,7 @@ export interface IPost extends Document {
   createdAt: Date
   user: PopulatedDoc<IUser>
   comments?: PopulatedDoc<IComments>
-  likes?: PopulatedDoc<ILike>
+  likes?: [PopulatedDoc<ILike>]
 }
 
 const PostSchema = new mongoose.Schema<IPost>({
