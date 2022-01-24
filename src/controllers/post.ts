@@ -164,11 +164,7 @@ export const likePost = asyncHandler(
       res.status(200).json({ message: "liked" });
     } else {
       // TO DO: if there is a like  FIX: change deleteOne()
-      await Like.deleteOne()
-        .where("post")
-        .equals(post)
-        .where("user")
-        .equals(req.body.user);
+      await Like.deleteOne(like);
       res.status(200).json({ message: "unliked" });
     }
   }
