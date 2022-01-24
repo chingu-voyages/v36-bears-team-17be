@@ -5,6 +5,7 @@ import { User } from "../models/User";
 import { Like } from "../models/Like";
 import { Comments } from "../models/Comment";
 import ErrorResponse from "../utils/errorResponse";
+import { RequestWithUser } from "../types/express";
 
 // @desc      Get a Single Post
 // @route     GET /api/auth/posts/:id
@@ -14,8 +15,8 @@ export const getPost = asyncHandler(
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const post = await Post.findById(req.params.id)
       // .populate('likes')
-      .populate('comments')
-      .populate({ path: 'user', select: '_id username displayName' })
+      .populate("comments")
+      .populate({ path: "user", select: "_id username displayName" });
 
     if (!post) {
       return next(new ErrorResponse(`The requested post does not exist`, 401));
@@ -45,8 +46,8 @@ export const getPosts = asyncHandler(
 
 export const createPost = asyncHandler(
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    const { title, description } = req.body
-    req.body.user = req.user.id
+    const { title, description } = req.body;
+    req.body.user = req.user.id;
     if (!title || !description) {
       return next(new ErrorResponse(`Please add a title, description`, 404));
     }
@@ -62,9 +63,8 @@ export const createPost = asyncHandler(
 // @access    Private
 
 export const updatePost = asyncHandler(
-
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    let post = await Post.findById(req.params.id)
+    let post = await Post.findById(req.params.id);
 
     if (!post) {
       return next(new ErrorResponse(`No post found with that Id`, 404));
@@ -94,8 +94,7 @@ export const updatePost = asyncHandler(
 
 export const deletePost = asyncHandler(
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    let post = await Post.findById(req.params.id)
-
+    let post = await Post.findById(req.params.id);
 
     if (!post) {
       return next(new ErrorResponse(`No post found with that Id`, 404));
@@ -119,7 +118,7 @@ export const deletePost = asyncHandler(
 
 export const userPosts = asyncHandler(
   async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    const user = await User.findOne({ username: req.params.username })
+    const user = await User.findOne({ username: req.params.username });
 
     if (!user) {
       return next(new ErrorResponse(`The profile doesn't exist`, 404));
@@ -171,5 +170,3 @@ export const likePost = asyncHandler(
     }
   }
 );
-
-
